@@ -534,7 +534,17 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (!gameRunning || isPaused) return;
+            if (!gameRunning) return;
+            
+            // 一時停止の切り替えは常に受け付ける
+            if (e.key === ' ') {
+                isPaused = !isPaused;
+                e.preventDefault();
+                return;
+            }
+            
+            // 一時停止中は他の操作を無効にする
+            if (isPaused) return;
             
             switch (e.key) {
                 case 'ArrowLeft':
@@ -564,10 +574,6 @@
                     if (currentPuyo && currentPuyo.canRotate(1)) {
                         currentPuyo.rotate(1);
                     }
-                    break;
-                case ' ':
-                    isPaused = !isPaused;
-                    e.preventDefault();
                     break;
             }
             
